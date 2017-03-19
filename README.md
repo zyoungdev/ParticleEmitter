@@ -5,6 +5,8 @@
 * SDL2
 * CMake
 * C++11
+* GLEW
+* glm
 
 ## Installation
 
