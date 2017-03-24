@@ -4,37 +4,64 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <string>
-#include <thread>
 
 class SDLWindow{
 public:
-    SDL_Renderer* rend = NULL;
+    SDL_Window* win = nullptr;
+    SDL_Renderer* rend = nullptr;
 private:
-    SDL_GLContext glContext = NULL;
-    SDL_Event e;
-    bool isRunning = true;
-    std::thread quitEventThread;
+    SDL_GLContext glContext = nullptr;
 
-    SDLWindow& initSDL(){
+public:
+    SDLWindow(
+        const std::string& n = "Game Loop",
+        const uint& w = 800,
+        const uint& h = 600,
+        const Uint32& o = SDL_WINDOW_SHOWN,
+        const Uint32& r_o = SDL_RENDERER_ACCELERATED)
+    {
+        if (initSDL())
+        {
+            initRenderer(r_o);
+            initWindow(n, w, h, o);
+        }
+    }
+
+    ~SDLWindow()
+    {
+        if (glContext != nullptr)
+            SDL_GL_DeleteContext(glContext);
+
+        SDL_DestroyRenderer(rend);
+        SDL_DestroyWindow(win);
+        SDL_Quit();
+    }
+
+private:
+    bool initSDL()
+    {
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
         {
           std::cout << "could not initialize SDL2 \n" << SDL_GetError() << "\n";
+          return false;
         }
-        return *this;
+
+        return true;
     }
-    SDLWindow& initWindow(const std::string& name, 
-        const uint& width, 
-        const uint& height, 
-        const int& opts)
+
+    SDLWindow& initWindow(const std::string& name,
+        const Uint32& width,
+        const Uint32& height,
+        const Uint32& opts)
     {
-        this->win = SDL_CreateWindow((const char*)name.c_str(),
+        win = SDL_CreateWindow((const char*)name.c_str(),
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             width,
             height,
             opts);
 
-        if (this->win == NULL)
+        if (win == nullptr)
             std::cout << "Could not create Window\n" << SDL_GetError() << "\n";
 
         if ((opts & SDL_WINDOW_OPENGL) == SDL_WINDOW_OPENGL)
@@ -44,36 +71,23 @@ private:
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
             glContext = SDL_GL_CreateContext(win);
+
+            SDL_GL_SetSwapInterval(0);
         }
 
         return *this;
     }
-    SDLWindow& initRenderer(){
-        this->rend = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED||SDL_RENDERER_PRESENTVSYNC);
 
-        if (this->rend == NULL)
-        {
+    SDLWindow& initRenderer(const Uint32& opts)
+    {
+        rend = SDL_CreateRenderer(win, -1,
+                opts);
+
+        if (rend == nullptr)
             std::cout << "Could not create Renderer\n" << SDL_GetError() << "\n";
-        }
+
         return *this;
     }
-
-public:
-    SDLWindow(const std::string& n="Game Loop", const uint& w=800, const uint& h=600, const int& o=SDL_WINDOW_SHOWN){
-        this->initSDL()
-            .initWindow(n, w, h, o)
-            .initRenderer();
-    }
-    ~SDLWindow(){
-        if (glContext != NULL)
-            SDL_GL_DeleteContext(glContext);
-        
-        SDL_DestroyRenderer(rend);
-        SDL_DestroyWindow(win);
-        SDL_Quit();
-    }
-
-    SDL_Window* win = NULL;
 };
 
 #endif
