@@ -3,6 +3,7 @@ project(Particles)
 
 set(CMAKE_CXX_STANDARD 11)
 
+
 set(SOURCE_FILES
     cpp/main.cpp
     cpp/Particle.cpp
@@ -14,6 +15,11 @@ set(SOURCE_FILES
     h/Particles.h
     h/SDLWindow.h)
 add_executable(Particles ${SOURCE_FILES})
+
+add_custom_command(
+    TARGET Particles POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/glsl $<TARGET_FILE_DIR:Particles>/glsl)
 
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
