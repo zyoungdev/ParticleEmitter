@@ -35,7 +35,7 @@ Particle& Particle::compileShaders() {
 }
 Particle& Particle::fillBuffers() {
 	// Temporary vectors of data
-	std::map< std::string, std::vector< GLfloat > > data = {
+	std::unordered_map< std::string, std::vector< GLfloat > > data = {
 		{ "position", std::vector< GLfloat >{} },
 		{ "color", std::vector< GLfloat >{} }
 	};

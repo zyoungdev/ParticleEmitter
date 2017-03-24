@@ -9,17 +9,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 #include "GLProgram.h"
 
 class Obj{
 	public:
-		using MapUint 	= std::map< std::string, GLuint >;
-		using MapInt  	= std::map< std::string, GLint >;
-		using MapVec3 	= std::map< std::string, glm::vec3 >;
-		using MapMat4 	= std::map< std::string, glm::mat4 >;
-		using MapProg 	= std::map< std::string, GLProgram >;
+		using MapUint 	= std::unordered_map< std::string, GLuint >;
+		using MapInt  	= std::unordered_map< std::string, GLint >;
+		using MapVec3 	= std::unordered_map< std::string, glm::vec3 >;
+		using MapMat4 	= std::unordered_map< std::string, glm::mat4 >;
+		using MapProg 	= std::unordered_map< std::string, GLProgram >;
 		
 		// The Vertex Array Objects to hold our OpenGL state
 		MapUint vao = {
