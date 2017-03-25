@@ -72,7 +72,24 @@ public:
             rend = sdlWin.rend;
 
         init();
-        mainLoop();
+        main_loop();
+    }
+
+    void toggle_pause()
+    {
+        std::cout << "*** Paused ***\n";
+        SDL_Event pause_event = e;
+        Uint32 type = pause_event.type;
+        Uint32 code = pause_event.key.keysym.scancode;
+
+        SDL_WaitEvent(&e);
+
+        while (!(e.type == type && e.key.keysym.scancode == code))
+            SDL_WaitEvent(&e);
+
+        time_now_ms = SDL_GetTicks();
+        next_frame_time = time_now_ms + single_frame_time_in_ms;
+        prev_frame_time = time_now_ms;
     }
 
     virtual void init() {}
@@ -92,12 +109,12 @@ public:
     {
         if (is_first_run)
         {
-            std::cout << "Time Passed\tFrames Drawn\tFrames Skipped\n";
+            std::cout << "Time Passed\tFrames Drawn\n";
             is_first_run = false;
         }
 
         std::cout << time_now_ms/1000 <<
-            "\t\t" << draw_count << "\t\t" << frame_skips << "\n";
+            "\t\t" << draw_count << "\n";
 
         draw_count = 0;
     }
@@ -185,7 +202,7 @@ private:
     /**
      * Partition each frame for interpolation
      */
-    void interpolate_clamp()
+    void partition_frame()
     {
         bool draw = false;
 
@@ -244,7 +261,7 @@ private:
      *   Call virtual collision and position functions
      *      Frame skip if CPU can't keep up
      */
-    void mainLoop()
+    void main_loop()
     {
         while (is_running)
         {
@@ -279,7 +296,7 @@ private:
                         next_frame_time ) /
                 static_cast<float>( single_frame_time_in_ms );
 
-            interpolate_clamp();
+            partition_frame();
             calc_second_timer();
         }
     }

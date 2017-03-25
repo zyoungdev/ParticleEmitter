@@ -23,7 +23,7 @@ public:
 	glm::vec3 pos = {400.0f, 50.0f, 0.0f};
 
 	// The number of particles to emit
-	GLint numParticles = 100;
+	GLint numParticles = 750;
 
 	// The maximum radius of each particle
 	// This number is divided by 100.0f to get more variety in size

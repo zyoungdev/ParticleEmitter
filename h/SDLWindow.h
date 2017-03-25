@@ -9,6 +9,7 @@ class SDLWindow{
 public:
     SDL_Window* win = nullptr;
     SDL_Renderer* rend = nullptr;
+
 private:
     SDL_GLContext glContext = nullptr;
 
@@ -22,8 +23,10 @@ public:
     {
         if (initSDL())
         {
-            initRenderer(r_o);
             initWindow(n, w, h, o);
+
+            if ((o & SDL_WINDOW_OPENGL) == 0)
+                initRenderer(r_o);
         }
     }
 
