@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(Particles)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 
 set(SOURCE_FILES
@@ -14,6 +14,7 @@ set(SOURCE_FILES
     h/Particle.h
     h/Particles.h
     h/SDLWindow.h)
+
 add_executable(Particles ${SOURCE_FILES})
 
 add_custom_command(
@@ -34,9 +35,9 @@ include_directories(
 target_link_libraries(
         Particles
         ${OPENGL_LIBRARIES}
-        ${SDL2_LIBRARIES}
         ${GLEW_LIBRARIES}
+        SDL2
         m
 )
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -Wall -fmax-errors=1")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++17 -Wall -fmax-errors=1")
 
