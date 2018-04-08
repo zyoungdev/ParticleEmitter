@@ -2,6 +2,7 @@
 #include "../h/Particles.h"
 
 Particles& Particles::init() {
+    particles.reserve(numParticles);
 
 	// Seed our random number generator
 	// We aren't dealing with secure communications
@@ -70,7 +71,7 @@ Particles& Particles::handleEdge() {
 
 			// Bounce the particle
 			// Reverse the vertical direction and slow down our vertical speed
-			p.movement["vel"].y *= -0.5f;
+			p.movement["vel"].y *= -0.8f;
 			// Slow down our horizontal speed
 			p.movement["vel"].x *= 0.9f;
 

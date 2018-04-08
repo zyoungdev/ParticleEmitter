@@ -41,6 +41,7 @@ private:
 
     u_int32 tick_s = 0;
     u_int32 draw_count = 0;
+    u_int32 update_count = 0;
 
     bool is_first_run = true;
 
@@ -87,9 +88,7 @@ public:
         while (!(e.type == type && e.key.keysym.scancode == code))
             SDL_WaitEvent(&e);
 
-        time_now_ms = SDL_GetTicks();
-        next_frame_time = time_now_ms + single_frame_time_in_ms;
-        prev_frame_time = time_now_ms;
+        reset_timers();
     }
 
     virtual void init() {}
@@ -107,16 +106,21 @@ public:
      */
     virtual void console_output()
     {
-        if (is_first_run)
+        static u_int32 time_count = 0;
+
+        if ( is_first_run || time_count == 20)
         {
-            std::cout << "Time Passed\tFrames Drawn\n";
+            std::cout << "Time Passed\tUpdate Count\tDraw Count\n";
+
+            time_count = 0;
             is_first_run = false;
         }
 
-        std::cout << time_now_ms/1000 <<
+        std::cout << time_now_ms/1000 << "\t\t" << update_count <<
             "\t\t" << draw_count << "\n";
 
-        draw_count = 0;
+        time_count++;
+        update_count = draw_count = 0;
     }
 
     virtual void inputs(SDL_Event& e) {}
@@ -131,6 +135,12 @@ public:
     virtual void draw() {}
 
 private:
+    void reset_timers()
+    {
+        time_now_ms = SDL_GetTicks();
+        next_frame_time = time_now_ms + single_frame_time_in_ms;
+        prev_frame_time = time_now_ms;
+    }
 
     /**
      * Calculate correct time between frames
@@ -158,10 +168,14 @@ private:
             {
                 if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
                 {
-                    SDL_Event f;
-                    f.type = SDL_WINDOWEVENT;
-                    f.window.event = SDL_WINDOWEVENT_FOCUS_GAINED;
-                    SDL_WaitEvent(&f);
+                    SDL_Event ev;
+                    Uint32 type = e.type;
+                    Uint32 win_event = SDL_WINDOWEVENT_FOCUS_GAINED;
+
+                    while (!(ev.type == type && ev.window.event == win_event))
+                        SDL_WaitEvent(&ev);
+
+                    reset_timers();
                 }
                 break;
             }
@@ -288,6 +302,7 @@ private:
                 ip_flags[0] = ip_flags[1] = ip_flags[2] = ip_flags[3] = false;
 
                 frame_skips++;
+                update_count++;
             }
 
             interpolation =

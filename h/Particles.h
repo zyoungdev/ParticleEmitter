@@ -23,7 +23,7 @@ public:
 	glm::vec3 pos = {400.0f, 50.0f, 0.0f};
 
 	// The number of particles to emit
-	GLint numParticles = 750;
+	GLint numParticles = 100;
 
 	// The maximum radius of each particle
 	// This number is divided by 100.0f to get more variety in size
@@ -35,7 +35,7 @@ public:
 
 	// The maximum speed our particles move horizontally
 	// This value will be cut in half to make our particles move left and right of the origin
-	GLint maxSpeedX = 800;
+	GLint maxSpeedX = 1000;
 
 	// The minimum and maximum initial vertical speed
 	GLint minSpeedY = 300;
