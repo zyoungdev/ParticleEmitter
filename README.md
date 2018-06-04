@@ -2,16 +2,20 @@
 
 ## Prerequisites
 
-* SDL2
-* CMake
+* [SDL2](https://www.libsdl.org/)
+* [CMake](https://cmake.org/)
 * C++11
-* GLEW
-* glm
+* [GLEW](http://glew.sourceforge.net/)
+* [glm](https://glm.g-truc.net/0.9.8/index.html)
 
 ## Installation
 
-* `git clone` this repository.
-* `cd /path/to/repo`
-* `cmake ./`
-* `make && ./Particles`
-
+```bash
+> cd ~
+> git clone <this repo> particles-src
+> mkdir particles-build
+> cd particles-build
+> cmake ~/particles-src
+> make
+> ./Particles
+```
