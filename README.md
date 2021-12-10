@@ -1,5 +1,7 @@
 # 2D Particle Emitter
 
+[Watch a demo](https://zyoung.dev/downloads/particles.ogv)
+
 ## Prerequisites
 
 * [SDL2](https://www.libsdl.org/)
