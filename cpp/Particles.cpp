@@ -83,7 +83,7 @@ Particles& Particles::handleEdge() {
 	for (auto &p : this->particles)
 	{
 		// If the edge of the particle is below the screen bottom
-		if (p.position["now"].y - p.radius < 0)
+		if (p.position["now"].y - p.radius <= 10)
 		{
 			// Set the particle to rest on the screen bottom
 			p.position["now"].y = p.radius;
